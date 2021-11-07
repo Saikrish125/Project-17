@@ -18,7 +18,7 @@ var gameOver, restart;
 
 function preload(){
   pathImg = loadImage("Road.png");
-  mainRacerImg1 = loadAnimation("mainPlayer1.png","mainPlayer2.png");
+  mainRacerImg1 = loadAnimation("mainPlayer1.png");
   mainRacerImg2= loadAnimation("mainPlayer3.png");
   
   oppPink1Img = loadAnimation("opponent1.png","opponent2.png");
@@ -47,8 +47,8 @@ mainCyclist  = createSprite(70,150);
 mainCyclist.addAnimation("SahilRunning",mainRacerImg1);
 mainCyclist.scale=0.07;
   
-//set collider for mainCyclist
-
+//set collider  mainCyclist
+mainCyclist.setCollider("rectangle",0,0,mainCyclist.width, mainCyclist.height);
   
 gameOver = createSprite(650,150);
 gameOver.addImage(gameOverImg);
@@ -103,26 +103,30 @@ function draw() {
   }
   
    if(pinkCG.isTouching(mainCyclist)){
+     console.log("touching_pinkCG");
      gameState = END;
      player1.velocityY = 0;
      player1.addAnimation("opponentPlayer1",oppPink2Img);
     }
     
     if(yellowCG.isTouching(mainCyclist)){
+      console.log("touching_yellowCG");
       gameState = END;
       player2.velocityY = 0;
       player2.addAnimation("opponentPlayer2",oppYellow2Img);
     }
     
     if(redCG.isTouching(mainCyclist)){
+      console.log("touching_redCG");
       gameState = END;
       player3.velocityY = 0;
       player3.addAnimation("opponentPlayer3",oppRed2Img);
     }
-    
-}else if (gameState === END) {
+  }
+else if (gameState === END) {
+  console.log("END STATE");
     gameOver.visible = true;
-    //Add code to show restart game instrution in text here
+    text("Press Up Arrow to Restart game!", 650,120);
   
   
     path.velocityX = 0;
@@ -139,8 +143,15 @@ function draw() {
     redCG.setLifetimeEach(-1);
 
     //write condition for calling reset( )
+    if(keyDown("UP_ARROW")) {
+
+      reset();
+
+    }
+  
+  }
 }
-}
+  
 
 function pinkCyclists(){
         player1 =createSprite(1100,Math.round(random(50, 250)));
@@ -169,10 +180,19 @@ function redCyclists(){
         redCG.add(player3);
 }
 
-//create reset function here
+function reset(){
+  gameState = PLAY;
+  gameOver.visible = false;
+  mainCyclist.addAnimation("Sahilrunning", mainRacerImg1);
+
+  pinkCG.destroyEach();
+  redCG.destroyEach();
+  yellowCG.destroyEach();
+
+
+  distance = 0;
 
 
 
-
-
+}
 
